@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-900 text-gray-100 antialiased;
+  }
+}
+
+@layer components {
+  .risk-badge-critical   { @apply bg-red-900/60 text-red-300 text-xs font-semibold px-2 py-0.5 rounded-full; }
+  .risk-badge-high       { @apply bg-orange-900/60 text-orange-300 text-xs font-semibold px-2 py-0.5 rounded-full; }
+  .risk-badge-medium     { @apply bg-yellow-900/60 text-yellow-300 text-xs font-semibold px-2 py-0.5 rounded-full; }
+  .risk-badge-low        { @apply bg-green-900/60 text-green-300 text-xs font-semibold px-2 py-0.5 rounded-full; }
+  .risk-badge-negligible { @apply bg-slate-700 text-gray-400 text-xs font-semibold px-2 py-0.5 rounded-full; }
+
+  .card { @apply bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6; }
+  .btn-primary   { @apply bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50; }
+  .btn-secondary { @apply bg-slate-700 hover:bg-slate-600 text-gray-200 text-sm font-medium px-4 py-2 rounded-lg border border-slate-600 transition-colors; }
+  .btn-danger    { @apply bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors; }
+}
