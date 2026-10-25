@@ -8,7 +8,7 @@ Creates (or recreates) the four Azure AI Search indexes used by the RAG pipeline
   • sanctions-index      — OFAC / EU / UN / HMT watchlists
 
 Usage:
-    python -m scripts.create_search_indexes [--recreate] [--index INDEXNAME]
+    uv run --locked python -m scripts.create_search_indexes [--recreate] [--index INDEXNAME]
 
 Prerequisites:
     • .env is populated with AZURE_SEARCH_ENDPOINT and AZURE_SEARCH_API_KEY

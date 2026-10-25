@@ -5,7 +5,7 @@ Idempotently creates all 7 specialist agents in Azure AI Foundry using the
 Microsoft Agent Framework (MAF) SDK (azure-ai-agents).
 
 Usage:
-    python -m scripts.setup_foundry_agents [--dry-run] [--force-recreate]
+    uv run --locked python -m scripts.setup_foundry_agents [--dry-run] [--force-recreate]
 
 Prerequisites:
     • .env is populated with AZURE_AI_FOUNDRY_PROJECT_ENDPOINT + model names
@@ -18,7 +18,7 @@ import argparse
 import sys
 import os
 
-# Allow running from repo root: python -m scripts.setup_foundry_agents
+# Allow running from repo root: uv run --locked python -m scripts.setup_foundry_agents
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from dotenv import load_dotenv

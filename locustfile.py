@@ -10,10 +10,10 @@ Simulates realistic analyst and automated workflows:
   • Synthetic data generation
 
 Target: 10 concurrent users, ramp 2 users/sec, 1-minute run
-  locust -f locustfile.py -u 10 -r 2 --run-time 1m --headless --host http://localhost:8000
+  uv run --locked locust -f locustfile.py -u 10 -r 2 --run-time 1m --headless --host http://localhost:8000
 
 For live UI:
-  locust -f locustfile.py --host http://localhost:8000
+  uv run --locked locust -f locustfile.py --host http://localhost:8000
 """
 
 from __future__ import annotations

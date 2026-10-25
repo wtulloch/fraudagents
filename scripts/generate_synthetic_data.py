@@ -5,7 +5,7 @@ CLI tool to generate synthetic fraud / AML test data and optionally index it
 into Azure AI Search to power the RAG pipeline.
 
 Usage:
-    python -m scripts.generate_synthetic_data [options]
+    uv run --locked python -m scripts.generate_synthetic_data [options]
 
 Options:
     --records N          Number of records to generate (default: 200)
@@ -18,8 +18,8 @@ Options:
                                   SANCTIONS_EVASION ACCOUNT_TAKEOVER
 
 Example:
-    python -m scripts.generate_synthetic_data --records 500 --fraud-rate 0.2 --seed 42
-    python -m scripts.generate_synthetic_data --scenario STRUCTURING --no-index --output batch.json
+    uv run --locked python -m scripts.generate_synthetic_data --records 500 --fraud-rate 0.2 --seed 42
+    uv run --locked python -m scripts.generate_synthetic_data --scenario STRUCTURING --no-index --output batch.json
 """
 
 from __future__ import annotations

@@ -1,5 +1,6 @@
 @echo off
 setlocal EnableDelayedExpansion
+cd /d "%~dp0"
 
 title Fraud Detection — Azure Provisioning
 
@@ -16,20 +17,25 @@ if not exist "%~dp0.env" (
     exit /b 1
 )
 
-call "%~dp0.venv\Scripts\activate.bat"
+where uv >nul 2>&1
+if errorlevel 1 (
+    echo [ERROR] uv is not installed or not on PATH. See README.md for setup.
+    pause
+    exit /b 1
+)
 
 echo [1/3] Creating Azure AI Search indexes...
-python -m scripts.create_search_indexes
+uv run --locked python -m scripts.create_search_indexes
 if errorlevel 1 ( echo [FAILED] Search index creation failed. Check your AZURE_SEARCH_* vars. & pause & exit /b 1 )
 echo.
 
 echo [2/3] Registering Foundry agents via MAF...
-python -m scripts.setup_foundry_agents
+uv run --locked python -m scripts.setup_foundry_agents
 if errorlevel 1 ( echo [FAILED] Foundry agent setup failed. Check your AZURE_AI_FOUNDRY_* vars. & pause & exit /b 1 )
 echo.
 
 echo [3/3] Generating and indexing synthetic test data (500 records, 15%% fraud)...
-python -m scripts.generate_synthetic_data --records 500 --fraud-rate 0.15 --seed 42
+uv run --locked python -m scripts.generate_synthetic_data --records 500 --fraud-rate 0.15 --seed 42
 if errorlevel 1 ( echo [FAILED] Synthetic data generation failed. & pause & exit /b 1 )
 echo.
 

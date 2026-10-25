@@ -10,6 +10,13 @@ echo ============================================================
 echo.
 
 :: ── Verify .env exists ────────────────────────────────────────────────────────
+where uv >nul 2>&1
+if errorlevel 1 (
+    echo [ERROR] uv is not installed or not on PATH. See README.md for setup.
+    pause
+    exit /b 1
+)
+
 if not exist "%~dp0.env" (
     echo [ERROR] .env file not found! Copy .env.example to .env and fill in your Azure credentials.
     echo.
@@ -22,7 +29,7 @@ echo [1/2] Starting Backend (FastAPI on http://localhost:8000) ...
 echo       Logs: backend.log
 echo.
 start "Fraud Detection — Backend" /D "%~dp0" cmd /k ^
-    "title Backend ^& .venv\Scripts\activate ^& uvicorn backend.main:app --reload --port 8000 --log-level info"
+    "title Backend ^& uv run --locked python -m uvicorn backend.main:app --reload --port 8000 --log-level info"
 
 :: Wait a moment so backend has a head start before the browser opens
 timeout /t 3 /nobreak >nul
@@ -41,7 +48,7 @@ echo.
 echo ============================================================
 echo   Services started in separate windows:
 echo     Backend  →  http://localhost:8000
-echo     Docs     →  http://localhost:8000/docs  (Swagger UI)
+echo     Docs     →  http://localhost:8000/api/docs  (Swagger UI)
 echo     Frontend →  http://localhost:5173
 echo ============================================================
 echo.

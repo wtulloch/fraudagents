@@ -1,4 +1,7 @@
-# Fraud Detection System — Multi-Agent Platform
+---
+title: Fraud Detection System - Multi-Agent Platform
+description: Setup and architecture for the multi-agent fraud and AML detection platform.
+---
 
 An end-to-end autonomous fraud and AML detection system built on **Azure AI Foundry** using the **Microsoft Agent Framework (MAF)**. Implements a fan-out / fan-in orchestration pattern with Human-in-the-Loop governance, RAG-grounded agents, and a reinforcement learning feedback loop.
 
@@ -92,54 +95,71 @@ fraudagents/
 
 ### 1. Clone and configure
 
-```bash
+```powershell
 git clone <repo>
 cd fraudagents
-cp .env.example .env
+Copy-Item .env.example .env
 # Edit .env with your Azure credentials
 ```
 
 ### 2. Backend setup
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate          # Windows
-# source .venv/bin/activate     # Linux/macOS
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
+the following from the repository root:
 
-pip install -r requirements.txt
+```powershell
+uv sync --locked
 ```
+
+uv creates the local `.venv` and uses Python 3.11 or newer, downloading a
+compatible interpreter if needed. No manual environment activation is required.
+Python dependencies are declared in [pyproject.toml](pyproject.toml), with exact
+versions recorded in [uv.lock](uv.lock). Use `uv add <package>` or
+`uv remove <package>` to update both files, and commit them together.
 
 ### 3. Provision Azure resources
 
-```bash
+These commands create cloud resources and seed data. Confirm the target Azure
+environment and permissions before running them. Backend startup also
+initializes Cosmos DB containers, Search indexes, and Foundry agents.
+
+```powershell
 # Create AI Search indexes
-python scripts/create_search_indexes.py
+uv run --locked python -m scripts.create_search_indexes
 
 # Create Foundry agents via MAF
-python scripts/setup_foundry_agents.py
+uv run --locked python -m scripts.setup_foundry_agents
 
 # Seed synthetic data
-python scripts/generate_synthetic_data.py --records 500
+uv run --locked python -m scripts.generate_synthetic_data --records 500
 ```
 
 ### 4. Start backend
 
-```bash
-uvicorn backend.main:app --reload --port 8000
+```powershell
+uv run --locked python -m uvicorn backend.main:app --reload --port 8000
 ```
+
+Swagger UI is available at <http://localhost:8000/api/docs>.
+On Windows, [start_backend.bat](start_backend.bat),
+[provision.bat](provision.bat), and [start.bat](start.bat) use the same uv-managed
+environment. Ensure `uv` is on PATH before running them.
 
 ### 5. Start frontend
 
-```bash
-cd frontend
+```powershell
+Set-Location frontend
 npm install
 npm run dev        # http://localhost:5173
 ```
 
 ### 6. Load test
 
-```bash
-locust -f locustfile.py -u 10 -r 2 --run-time 1m
+Run from the repository root against a running, configured backend.
+Load tests can create data and incur Azure usage.
+
+```powershell
+uv run --locked locust -f locustfile.py -u 10 -r 2 --run-time 1m --host http://localhost:8000
 ```
 
 ---
